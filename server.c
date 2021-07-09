@@ -1,20 +1,13 @@
 #include "minitalk.h"
 
-int	output_error(char *str)
+int	put_error(char *str)
 {
 	ft_putendl_fd(str, STDERR_FILENO);
 	return (EXIT_FAILURE);
 }
 
-void	send_received(siginfo_t *info)
-{
-	if (kill(info->si_pid, SIGUSR1) == -1)
-		exit(output_error("failed to send signal to client."));
-}
-
 void	handler(int signo, siginfo_t *info, void *ctx)
 {
-	unsigned char	c;
 	static int		num = 0;
 	static int		digit = 0;
 
@@ -28,14 +21,14 @@ void	handler(int signo, siginfo_t *info, void *ctx)
 	}
 	if (digit == 8)
 	{
-		c = num;
-		if (c == '\0')
+		if (num == 0)
 		{
 			ft_putchar_fd('\n', STDOUT_FILENO);
-			send_received(info);
+			if (kill(info->si_pid, SIGUSR1) == -1)
+				exit(put_error("failed to send signal to client."));
 		}
 		else
-			ft_putchar_fd(c, STDOUT_FILENO);
+			ft_putchar_fd((unsigned char)num, STDOUT_FILENO);
 		num = 0;
 		digit = 0;
 	}
@@ -61,13 +54,13 @@ int	main(int argc, char const *argv[])
 	pid_t	pid;
 
 	if (argc != 1 || argv[1] != NULL)
-		return (output_error("Invalid argument."));
+		return (put_error("Invalid argument."));
 	pid = getpid();
 	ft_putstr_fd("pid: ", STDOUT_FILENO);
 	ft_putnbr_fd(pid, STDOUT_FILENO);
 	ft_putendl_fd("", STDOUT_FILENO);
 	if (!set_signal())
-		return (output_error("failed to set signal."));
+		return (put_error("failed to set signal."));
 	while (1)
 		pause();
 	return (EXIT_SUCCESS);

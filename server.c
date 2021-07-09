@@ -1,10 +1,4 @@
-#define _GNU_SOURCE
-#include <signal.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include "./libft/libft.h"
+#include "minitalk.h"
 
 void send_received(siginfo_t *info)
 {

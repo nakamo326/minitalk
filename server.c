@@ -21,7 +21,7 @@ void	handler(int signo, siginfo_t *info, void *ctx)
 	}
 	if (digit == 8)
 	{
-		if (num == 0)
+		if ((unsigned char)num == '\0')
 		{
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			if (kill(info->si_pid, SIGUSR1) == -1)

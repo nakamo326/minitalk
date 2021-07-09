@@ -7,7 +7,7 @@ LIBFT = ./libft/libft.a
 
 CLISRC =
 
-SERVSRC =
+SERVSRC =	server.c
 
 SRCDIRS = $(dir $(CLISRC)) $(dir $(SERVSRC))
 OBJDIR = ./obj

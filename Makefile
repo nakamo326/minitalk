@@ -5,9 +5,9 @@ CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -I./includes -I.
 LIBFT = ./libft/libft.a
 
-CLISRC =
+CLISRC = client.c
 
-SERVSRC =	server.c
+SERVSRC = server.c
 
 SRCDIRS = $(dir $(CLISRC)) $(dir $(SERVSRC))
 OBJDIR = ./obj

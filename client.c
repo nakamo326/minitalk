@@ -6,7 +6,7 @@ int	put_error(char *str)
 	return (EXIT_FAILURE);
 }
 
-int	send_byte(int *byte, pid_t serv)
+void	send_byte(int *byte, pid_t serv)
 {
 	int	i;
 
@@ -14,13 +14,18 @@ int	send_byte(int *byte, pid_t serv)
 	while (i < 8)
 	{
 		if (byte[i] == 0)
-			kill(serv, SIGUSR1);
+		{
+			if (kill(serv, SIGUSR1) == -1)
+				exit(put_error("failed to send signal"));
+		}
 		else
-			kill(serv, SIGUSR2);
-		usleep(500);
+		{
+			if (kill(serv, SIGUSR2) == -1)
+				exit(put_error("failed to send signal"));
+		}
+		usleep(300);
 		i++;
 	}
-	return (1);
 }
 
 int	send_string(pid_t serv, const char *str)

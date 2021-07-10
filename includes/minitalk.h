@@ -1,5 +1,5 @@
 #ifndef MINITALK_H
-# define MINTALK_H
+# define MINITALK_H
 
 # ifndef __LINUX__
 #  define _GNU_SOURCE

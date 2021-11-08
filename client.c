@@ -6,7 +6,7 @@
 /*   By: ynakamot <ynakamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 16:08:49 by ynakamot          #+#    #+#             */
-/*   Updated: 2021/09/11 16:08:51 by ynakamot         ###   ########.fr       */
+/*   Updated: 2021/11/08 10:07:29 by ynakamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	send_string(pid_t serv, const char *str)
 		send_byte(byte, serv);
 		i++;
 	}
-	ft_bzero(byte, 4 * 8);
+	ft_bzero(byte, sizeof(int) * 8);
 	send_byte(byte, serv);
 	return (EXIT_SUCCESS);
 }

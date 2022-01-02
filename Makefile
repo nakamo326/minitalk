@@ -1,7 +1,7 @@
 NAME = minitalk
 CLI = client
 SERV = server
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -g
 INCLUDES = -I./includes -I.
 LIBFT = ./libft/libft.a
 
@@ -9,28 +9,32 @@ CLISRC = client.c
 
 SERVSRC = server.c
 
+SRCFILE = $(CLISRC) $(SERVSRC)
+
 SRCDIRS = $(dir $(CLISRC)) $(dir $(SERVSRC))
 OBJDIR = ./obj
-BINDIRS = $(addprefix $(OBJDIR)/, $(SRCDIRS))
 CLIOBJS = $(addprefix $(OBJDIR)/, $(CLISRC:.c=.o))
 SERVOBJS = $(addprefix $(OBJDIR)/, $(SERVSRC:.c=.o))
+DEPS = $(addprefix $(OBJDIR)/, $(SRCFILE:.c=.d))
 
 all: $(NAME)
+
+-include $(DEPS)
 
 $(NAME): $(CLI) $(SERV)
 
 $(CLI): $(CLIOBJS) $(LIBFT)
-	gcc -g $(CFLAGS) $^ $(INCLUDES) -o $@
+	gcc $(CFLAGS) $(INCLUDES) $^ -o $@
 
 $(SERV): $(SERVOBJS) $(LIBFT)
-	gcc -g $(CFLAGS) $^ $(INCLUDES) -o $@
+	gcc $(CFLAGS) $(INCLUDES) $^ -o $@
 
 $(LIBFT):
-	$(MAKE) bonus -C ./libft
+	$(MAKE) -C ./libft
 
 $(OBJDIR)/%.o: %.c
-	@mkdir -p $(BINDIRS)
-	gcc -g $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@mkdir -p $(OBJDIR)/$(*D)
+	gcc $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	$(MAKE) clean -C ./libft
@@ -38,8 +42,8 @@ clean:
 
 fclean:
 	$(MAKE) fclean -C ./libft
-	$(RM) $(CLI) $(SERV)
 	$(RM) -r $(OBJDIR)
+	$(RM) $(CLI) $(SERV)
 
 re: fclean all
 
